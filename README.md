@@ -17,11 +17,6 @@
 目前仅在安卓手机端测试通过，其他平台未测试；欢迎其他伙伴参与贡献；也欢迎联系我讨论技术问题
 
 ## 预览
-- 编辑页
-![编辑页](./md-image/image.png)
-- 预览页
-![预览页](./md-image/image-1.png)
-- 日记列表
-![列表页](./md-image/image-2.png)
+![列表页](./md-image/image.png)![预览页](./md-image/image-1.png)![编辑页](./md-image/image-2.png)
 
 (email: 1243304602@qq.com; weixin: 1243304602)
