@@ -12,12 +12,14 @@
   </view>
 </template>
 
-<script setup>
-import { ref, watchEffect } from 'vue'
+<script setup lang="ts">
+import { ref, watchEffect, onBeforeUnmount } from 'vue'
 import { onLoad,onShow } from '@dcloudio/uni-app'
-import { readFile } from '../../utils/files'
+import { deleteFile, readFile } from '../../utils/files'
+import { DiaryItem } from '../../hooks/interface'
 const content = ref('')
-const diaryItem = ref(null)
+const diaryItem:DiaryItem = ref(null)
+const openFileDiary = ref(null)
 onLoad(option => {
   console.log(option)
   const pages = getCurrentPages() // 无需import
@@ -30,12 +32,27 @@ onLoad(option => {
       diaryItem.value = data.data
     }
   })
+  // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
+  eventChannel.on('acceptDataFromOpenFile', function (data) {
+    console.log(data)
+    if (data && data.data) {
+      openFileDiary.value = data.data
+      diaryItem.value = data.data
+    }
+  })
 })
 onShow(() => {
   if(diaryItem.value && diaryItem.value.path){
     readFileFun(diaryItem.value.path).then(res => {
       content.value = res
     })
+  }
+})
+
+onBeforeUnmount(() => {
+  console.log('页面销毁', openFileDiary.value,openFileDiary.value.id)
+  if(!openFileDiary.value?.id){
+    deleteFile(openFileDiary.value.path)
   }
 })
 watchEffect(() => {

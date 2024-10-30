@@ -17,5 +17,6 @@
 	@import "./static/css/bootstrap.css";
 	.content{
 		margin-top: 100rpx;
+		width: 100%;
 	}
 </style>

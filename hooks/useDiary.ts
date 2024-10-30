@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { createTbSql, executeSQL, selectSQL } from '../utils/sqlite'
 import { timestampToDateTime } from '../utils/common'
 import { deleteFile, saveFile, updateFile } from '../utils/files'
+import { DiaryItem } from './interface'
 const useDiary = () => {
   const diaryList = ref([])
   // 获取文件列表
@@ -14,14 +15,14 @@ const useDiary = () => {
     diaryList.value.forEach(item => {
       item.updated_at = timestampToDateTime(item.updated_at)
     })
-    console.log('diaryList.value', diaryList.value)
+    // console.log('diaryList.value', diaryList.value)
     return diaryList.value
   }
 
   // 保存到手机文件夹中，md格式
   const saveMD = async (diaryItem: DiaryItem, content: string, title?: string, className?: string, top?: 0 | 1) => {
     // 不是编辑则新建
-    if (!diaryItem) {
+    if (!diaryItem?.id) {
       const res = await saveFile(content)
       if (res.path) {
         const param = {
@@ -31,7 +32,7 @@ const useDiary = () => {
           path: res.path,
           top: top ? 1 : 0 // 0 不置顶，1置顶
         }
-		console.log('insert params:',param)
+		// console.log('insert params:',param)
         await insertFun(param)
       }
     }
@@ -64,13 +65,13 @@ const useDiary = () => {
 
   const insertFun = async param => {
     // 判断sqlite是否存在表diary_item
-    const res = await selectSQL('select name from sqlite_master where type=\'table\' and name=\'diary_item\';')
+    // const res = await selectSQL('select name from sqlite_master where type=\'table\' and name=\'diary_item\';')
     // if (res.rows.length === 0) {
       // 不存在则创建
-      await createTbSql("diary_item", "id integer primary key, title text,desc text,class_name text default '全部',path text,top int(2), created_at datetime default current_timestamp, updated_at datetime default current_timestamp");
+    // await createTbSql("diary_item", "id integer primary key, title text,desc text,class_name text default '全部',path text,top int(2), created_at datetime default current_timestamp, updated_at datetime default current_timestamp");
 
     // }
-
+    await createTbSql("diary_item", "id integer primary key, title text,desc text,class_name text default '全部',path text,top int(2), created_at datetime default current_timestamp, updated_at datetime default current_timestamp");
     await executeSQL(
       `insert into diary_item(title,desc,class_name,path,top,created_at,updated_at) values(
 			'${param.title}',
