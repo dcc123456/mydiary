@@ -1,7 +1,9 @@
 <template>
   <view class="content" >
     <uni-title type="h1" :title="diaryItem.title" style="white-space: nowarp;"></uni-title>
-    <ShowDiary :content="content"></ShowDiary>
+	<view class="diary-contain">
+		<ShowDiary :content="content"></ShowDiary>
+	</view>
 	<view
 	  class="icon-class"
 	  @click="toEdit">
@@ -13,13 +15,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, onBeforeUnmount } from 'vue'
+import { ref, watchEffect, onBeforeUnmount,onMounted,getCurrentInstance } from 'vue'
 import { onLoad,onShow } from '@dcloudio/uni-app'
 import { deleteFile, readFile } from '../../utils/files'
 import { DiaryItem } from '../../hooks/interface'
 const content = ref('')
 const diaryItem:DiaryItem = ref(null)
 const openFileDiary = ref(null)
+
+ //  onMounted(() => {
+ //    const instance = getCurrentInstance().proxy
+ //    const eventChannel = instance.getOpenerEventChannel();
+	// })
 onLoad(option => {
   console.log(option)
   const pages = getCurrentPages() // 无需import
@@ -74,7 +81,7 @@ watchEffect(() => {
 
 const readFileFun = async path => {
   const res = await readFile(path)
-  console.log(res)
+  // console.log(res)
   return res
 }
 
@@ -83,7 +90,7 @@ const toEdit = () => {
     url: '../edit/index',
     success: function (res) {
       // 通过eventChannel向被打开页面传送数据
-      res.eventChannel.emit('acceptDataFromDetail', { data: diaryItem.value })
+      uni.$emit('acceptDataFromDetail', { data: diaryItem.value })
     },
     fail: function (err) {
       console.error('跳转失败:', err)
@@ -100,6 +107,11 @@ const toEdit = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.diary-contain{
+	width: 90vw;
+	height: calc(100vh - 80rpx);
+	overflow: auto;
 }
 .text-area {
   display: flex;

@@ -264,6 +264,7 @@ const getDirectionInfo = async (entries) => {
         return;
       }
       mata = await getMata(itemEntry)
+	  console.log(itemEntry.name, mata)
       // const mata = await getMata(itemEntry)
       const item = {
         name: itemEntry.name,

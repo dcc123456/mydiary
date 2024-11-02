@@ -530,6 +530,36 @@
   text-decoration: none;
   text-align: center;
 }
+.t-contian[data-v-e0455fd6] {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.875rem;
+  border-bottom: 1px solid #ccc;
+  padding: 0 0.625rem;
+  font-size: 1.125rem;
+}
+.t-contian .t-left[data-v-e0455fd6] {
+  display: flex;
+  justify-content: flex-start;
+  margin-right: 0.9375rem;
+}
+.t-contian .t-left .icon-next[data-v-e0455fd6] {
+  transform: rotateY(180deg);
+}
+.t-contian .t-left .icon-pre[data-v-e0455fd6],
+.t-contian .t-left .icon-next[data-v-e0455fd6] {
+  margin: 0 0.625rem;
+}
+.t-contian .t-right[data-v-e0455fd6] {
+  display: flex;
+  justify-content: flex-end;
+}
+.t-contian .t-right uni-view[data-v-e0455fd6] {
+  margin-right: 0.9375rem;
+}
+
 /**
  * 这里是uni-app内置的常用样式变量
  *
@@ -680,6 +710,9 @@
   flex: 1;
   background-color: #e6e4e4;
 }
+.diary-textarea[data-v-fc6aff6b] .uni-easyinput__content-textarea {
+  height: calc(100vh - 150px);
+}
 
 .content[data-v-ff3a2279] {
   display: flex;
@@ -690,6 +723,13 @@
 .title-class[data-v-ff3a2279] {
   width: 100%;
   margin-bottom: 0.625rem;
+}
+.title-class .title-input-class[data-v-ff3a2279] {
+  border-bottom: 1px solid #f0eded;
+  text-align: center;
+}
+.title-class .title-input-class[data-v-ff3a2279] .uni-easyinput__content-input {
+  font-size: 1.125rem;
 }
 .title-class .is-input-border[data-v-ff3a2279] {
   border-style: none;

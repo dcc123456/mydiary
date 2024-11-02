@@ -3,7 +3,7 @@
     <DiaryList :list="diaryList"></DiaryList>
     <!-- <test></test> -->
      <!-- <Directory></Directory> -->
-    <view
+<!--    <view
       class="icon-class"
       @click="toEdit">
       <uni-icons
@@ -16,7 +16,7 @@
       <uni-icons
         type="list"
         size="30"></uni-icons>
-    </view>
+    </view> -->
   </view>
 </template>
 
@@ -36,25 +36,25 @@ onLoad(() => {
   })
 })
 onMounted(() => {
-  if (plus.os.name === 'Android') {
-    const permission = ['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE'];
-    plus.android.requestPermissions(permission, result => {
-      if (
-        result &&
-        result['android.permission.READ_EXTERNAL_STORAGE'] === 'granted' &&
-        result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted'
-      ) {
-        console.log('权限已授予')
-      } else {
-        console.error('权限未授予')
-        // 重新授权
-        // 未授权，请求权限
-        const activity = plus.android.runtimeMainActivity();
-          const requestCode = 100; // 自定义请求码
-          activity.requestPermissions(permission, requestCode);
-      }
-    })
-  }
+  // if (plus.os.name === 'Android') {
+  //   const permission = ['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE'];
+  //   plus.android.requestPermissions(permission, result => {
+  //     if (
+  //       result &&
+  //       result['android.permission.READ_EXTERNAL_STORAGE'] === 'granted' &&
+  //       result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted'
+  //     ) { 
+  //       console.log('权限已授予')
+  //     } else {
+  //       console.error('权限未授予')
+  //       // 重新授权
+  //       // 未授权，请求权限
+  //       const activity = plus.android.runtimeMainActivity();
+  //         const requestCode = 100; // 自定义请求码
+  //         activity.requestPermissions(permission, requestCode);
+  //     }
+  //   })
+  // }
 })
 onPullDownRefresh(() => {
   getDiaryList().finally(() => uni.stopPullDownRefresh())

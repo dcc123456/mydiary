@@ -11,12 +11,14 @@
 		}
 	}
 </script>
-
+<style lang="less">
+	@import "./static/css/common.less";
+</style>
 <style>
 	/*每个页面公共css */
 	@import "./static/css/bootstrap.css";
 	.content{
-		margin-top: 100rpx;
+		padding-top: 100rpx;
 		width: 100%;
 	}
 </style>

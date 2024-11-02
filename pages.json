@@ -37,8 +37,37 @@
       "style": {
         "navigationBarTitleText": "diary"
       }
+    },
+    {
+    	"path" : "pages/add/add",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : ""
+    	}
     }
   ],
+  "tabBar": {
+  		"selectedColor": "#00aaff",
+  		"color": "#C0C0C0",
+		"fontSize" : "16px",
+  		"list": [{
+  			"text": "最近",
+  			"pagePath": "pages/index/index"
+  			// "iconPath": "static/images/index_like.png",
+  			// "selectedIconPath": "static/images/index_like_c.png"
+   
+  		}, {
+  			"text": "创建",
+  			"pagePath": "pages/add/add"
+  			// "iconPath": "./static/images/index_address.png",
+  			// "selectedIconPath": "static/images/index_address_c.png"
+  		},{
+			"text": "本地",
+			"pagePath": "pages/openFile/index"
+		}
+		
+		]
+},
   "globalStyle": {
     "navigationStyle": "custom",
     "navigationBarTextStyle": "black",

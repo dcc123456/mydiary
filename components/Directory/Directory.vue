@@ -12,9 +12,9 @@
       <uni-list>
         <uni-list-item v-for="item in list" :showArrow="item.isDirectory" :key="item" :title="item.name" :note="item.modificationTime" clickable
           @click="clickListItem(item)">
-          <template v-slot:footer v-if="item.isDirectory">
+<!--          <template v-slot:footer v-if="item.isDirectory">
             {{`${(item.directoryCount || 0)+(item.fileCount || 0)}项`}}
-          </template>
+          </template> -->
         </uni-list-item>
 
       </uni-list>
@@ -27,26 +27,35 @@ import { getDirection } from '../../utils/files'
 import { timestampToDateTime } from '../../utils/common';
 const paths = ref([{ title: '文件选择', name: [''] }]);
 const emit = defineEmits('selected');
+// 安卓手机只能访问外部这两个目录，其他目录没有权限访问
 const initList = [
   { name: 'Documents', names: ['Documents'], isDirectory:true, isFile:false },
   { name: 'Download', names: ['Download'], isDirectory:true, isFile:false }
 ];
 let list = ref(initList)
 
-
-const clickBread = (idx: number) => {
-  console.log('path ->', [...paths.value], idx);
+/**
+ * 点击面包屑，跳转
+ */
+const clickBread = async (idx: number) => {
   if (idx > -1) {
     paths.value.splice(idx + 1, paths.value.length - 1)
   }
   console.log('path2 ->', ...paths.value);
   const names = paths.value[idx].name
   console.log('names ->', names);
-  getList(names).catch(e => {
-	  console.error(e);
-	  list.value = initList
-  })
+  try{
+  	await getList(names)
+  }catch(e){
+  	//TODO handle the exception
+	console.error(e);
+	list.value = initList
+  }
 }
+
+/**
+ * 点击目录条目触发
+ */
 const clickListItem = item => {
   if (!item) {
     return
@@ -59,26 +68,21 @@ const clickListItem = item => {
     getList(item.names)
   }
 }
+
+/**
+ * 获取目录列表
+ */
 const getList = async (names: [string]) => {
   const name = names.join('/')
-  let res = null
-  getDirection(name).then(thisRes =>{
-	  console.log('获取目录成功：',thisRes)
-	  res = thisRes;
-	  if (res && Array.isArray(res)) {
-		res.forEach(element => {
-		  element.names = [...names, element.name]
-		  element.modificationTime = timestampToDateTime(new Date(element.modificationTime).getTime())
-		})
-		list.value = res
-	  }
-  }).catch(e =>{
-	  console.error('获取目录失败：',e)
-	  return;
-  })
-
-  // Object.assign(list,res)
-  console.log('update -->', list)
+  // let res = null
+  const res = await getDirection(name);
+  if (res && Array.isArray(res)) {
+  		res.forEach(element => {
+  		  element.names = [...names, element.name]
+  		  element.modificationTime = timestampToDateTime(new Date(element.modificationTime).getTime())
+  		})
+  		list.value = res
+  }
 }
 </script>
 

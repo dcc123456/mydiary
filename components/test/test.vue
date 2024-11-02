@@ -14,10 +14,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import MarkdownIt from "../../lib/index"
 import { deleteFile, readFile, saveFile, testFileOp, updateFile } from "../../utils/files";
 import { openDB, closeDB, executeSQL, createTbSql, selectSQL, clearTable, dropTable } from "../../utils/sqlite";
+// import { onLaunch } from '@dcloudio/uni-app';
 	const content = ref("5555");
 	const md = MarkdownIt()
 	const result = ref();
@@ -27,6 +28,19 @@ import { openDB, closeDB, executeSQL, createTbSql, selectSQL, clearTable, dropTa
 	const getContent = () =>{
 		return content.value;
 	}
+
+
+	onMounted(() => {
+  if (plus.os.name === 'Android') {
+    plus.android.requestPermissions(['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE'], (result) => {
+      if (result && result['android.permission.READ_EXTERNAL_STORAGE'] === 'granted' && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') {
+        console.log('权限已授予');
+      } else {
+        console.error('权限未授予');
+      }
+    });
+  }
+});
 
 	// 保存到手机文件夹中，md格式
 	const saveMD = async() =>{
