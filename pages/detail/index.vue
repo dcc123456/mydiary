@@ -110,7 +110,7 @@ const toEdit = () => {
 }
 .diary-contain{
 	width: 90vw;
-	height: calc(100vh - 80rpx);
+	height: calc(100vh - 150rpx);
 	overflow: auto;
 }
 .text-area {

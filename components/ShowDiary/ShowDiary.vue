@@ -23,27 +23,29 @@ import {
 } from '../../utils/markdown-plugins'
 // import hljs from '../../lib/highlight.js/es/index.js' // https://highlightjs.org
 import hljs from 'highlight.js'
+// import markdownitcheckbox from 'markdown-it-checkbox'
+import { tasklist } from "@mdit/plugin-tasklist";
+
 // Actual default values
 let md = MarkdownIt({
-	html: true,
-	linkify: true,
-	typographer: true,
+  html: true,
+  linkify: true,
+  typographer: true,
   highlight: function (str, lang) {
-	  console.log('highlight',str,lang,lang && hljs.getLanguage(lang))
-	 
+    console.log('highlight', str, lang, lang && hljs.getLanguage(lang))
+
     if (lang && hljs.getLanguage(lang)) {
       try {
-        return '<pre><code class="hljs">' +
-               hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
-               '</code></pre>';
+        return '<pre><code class="hljs">' + hljs.highlight(str, { language: lang, ignoreIllegals: true }).value + '</code></pre>'
       } catch (__) {}
     }
 
-    return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
+    return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>'
   }
 })
 const mdInit = () => {
   md = md
+    .use(tasklist,{})
     .use(abbr_plugin)
     .use(container_plugin, 'warning')
     .use(deflist_plugin)
@@ -53,6 +55,7 @@ const mdInit = () => {
     .use(ins_plugin)
     .use(sub_plugin)
     .use(sup_plugin)
+
 
   // Beautify output of parser for html content
   md.renderer.rules.table_open = function () {

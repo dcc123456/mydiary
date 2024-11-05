@@ -12,7 +12,7 @@
       <uni-list>
         <uni-list-item v-for="item in list" :showArrow="item.isDirectory" :key="item" :title="item.name" :note="item.modificationTime" clickable
           @click="clickListItem(item)">
-<!--          <template v-slot:footer v-if="item.isDirectory">
+         <!-- <template v-slot:footer v-if="item.isDirectory && (item.directoryCount || 0)+(item.fileCount || 0)">
             {{`${(item.directoryCount || 0)+(item.fileCount || 0)}项`}}
           </template> -->
         </uni-list-item>

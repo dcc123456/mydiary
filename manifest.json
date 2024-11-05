@@ -16,7 +16,9 @@
             "autoclose" : true,
             "delay" : 0
         },
-		"softinput" : {"mode" : "adjustPan"},
+        "softinput" : {
+            "mode" : "adjustPan"
+        },
         /* 模块配置 */
         "modules" : {
             "SQLite" : {}

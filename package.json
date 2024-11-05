@@ -21,6 +21,7 @@
   "description": "",
   "dependencies": {
     "@dcloudio/uni-ui": "^1.5.6",
+    "@mdit/plugin-tasklist": "^0.13.1",
     "entities": "^5.0.0",
     "highlight.js": "^11.9.0",
     "linkify-it": "^5.0.0",

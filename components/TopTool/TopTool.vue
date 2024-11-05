@@ -2,13 +2,13 @@
 	<view class="t-contian">
 		<view class="t-left">
 			<view @click="backFun">返回</view>
+			<view :class="['icon-pre']">
+				<uni-icons type="undo" size="20" :color="canUndo ? '#000':'#ccc'" @click="undoFun"></uni-icons>
+			</view>
+			<view :class="['icon-next']">
+				<uni-icons type="undo" size="20" :color="canRedo ? '#000':'#ccc'" @click="redoFun"></uni-icons>
+			</view>
 			<template v-if="false">
-			<view class="icon-pre">
-				<uni-icons type="undo" size="20"></uni-icons>
-			</view>
-			<view class="icon-next">
-				<uni-icons type="undo" size="20"></uni-icons>
-			</view>
 			<view>
 				<uni-icons type="bars" size="20"></uni-icons>
 			</view>
@@ -27,13 +27,22 @@
 </template>
 
 <script lang="ts" setup>
-	
-	const emit = defineEmits(['saved','back'])
+	const {canUndo,canRedo} = defineProps({
+		canUndo:Boolean,
+		canRedo:Boolean
+	})
+	const emit = defineEmits(['saved','back','undo','redo'])
 	const saveFun = ()=>{
 		emit('saved')
 	}
 	const backFun = () =>{
 		emit('back')
+	}
+	const undoFun = ()=>{
+		emit('undo')
+	}
+	const redoFun = ()=>{
+		emit('redo')
 	}
 
 </script>
@@ -57,6 +66,10 @@
 		}
 		.icon-pre,.icon-next{
 			margin: 0 20rpx;
+		}
+		.icon-pre,.icon-next .disabled{
+			color: #ccc;
+			cursor: not-allowed;
 		}
 	}
 	
