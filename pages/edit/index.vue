@@ -145,15 +145,21 @@ const updateContent = (val) =>{
 watchEffect(() => {
   if (diaryItem.value) {
     title.value = diaryItem.value.title
-    readFileFun(diaryItem.value.path)
-      .then(res => {
-        // content.value = res
-        saveContent(res)
-        initDiaryContent.value = res
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    if(diaryItem.value.content){
+      saveContent(diaryItem.value.content)
+      initDiaryContent.value = diaryItem.value.content
+    }
+    if(diaryItem.value.path){
+      readFileFun(diaryItem.value.path)
+        .then(res => {
+          // content.value = res
+          saveContent(res)
+          initDiaryContent.value = res
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 })
 

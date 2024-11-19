@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, onBeforeUnmount,onMounted,getCurrentInstance } from 'vue'
-import { onLoad,onShow } from '@dcloudio/uni-app'
+import { onLoad,onShow,onBackPress } from '@dcloudio/uni-app'
 import { deleteFile, readFile } from '../../utils/files'
 import { DiaryItem } from '../../hooks/interface'
 const content = ref('')
@@ -28,7 +28,7 @@ const openFileDiary = ref(null)
  //    const eventChannel = instance.getOpenerEventChannel();
 	// })
 onLoad(option => {
-  console.log(option)
+  console.log('detail',option)
   const pages = getCurrentPages() // 无需import
   const page = pages[pages.length - 1]
   const eventChannel = page.getOpenerEventChannel()
@@ -39,6 +39,14 @@ onLoad(option => {
       diaryItem.value = data.data
     }
   })
+	
+	eventChannel.on('acceptDataFromApp', function (data) {
+	  console.log('acceptDataFromApp---->',data)
+	  console.log('acceptDataFromApp---->',data.data)
+	  if (data && data.data) {
+	    diaryItem.value = {content:data.data}
+	  }
+	})
   // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
   eventChannel.on('acceptDataFromOpenFile', function (data) {
     console.log(data)
@@ -65,8 +73,11 @@ onBeforeUnmount(() => {
 watchEffect(() => {
   if (diaryItem.value) {
     // title.value = diaryItem.value.title;
-    // content.value = diaryItem.value.content;
-
+		if(diaryItem.value.content){
+    content.value = diaryItem.value.content;
+			
+		}
+		if(diaryItem.value.path){
     readFileFun(diaryItem.value.path)
       .then(res => {
         content.value = res
@@ -75,6 +86,8 @@ watchEffect(() => {
       .catch(err => {
         console.log(err)
       })
+			
+		}
   }
   // console.log(diaryItem.value)
 })
@@ -84,7 +97,9 @@ const readFileFun = async path => {
   // console.log(res)
   return res
 }
-
+onBackPress(()=>{
+	plus.runtime.arguments = ''
+})
 const toEdit = () => {
   uni.navigateTo({
     url: '../edit/index',

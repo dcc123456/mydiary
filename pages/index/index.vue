@@ -1,9 +1,11 @@
 <template>
   <view class="content">
-    <DiaryList :list="diaryList"></DiaryList>
+    <DiaryList
+      :list="diaryList"
+      @toDetail="toDetail"></DiaryList>
     <!-- <test></test> -->
-     <!-- <Directory></Directory> -->
-<!--    <view
+    <!-- <Directory></Directory> -->
+    <!--    <view
       class="icon-class"
       @click="toEdit">
       <uni-icons
@@ -21,9 +23,10 @@
 </template>
 
 <script setup>
-import {onMounted} from 'vue'
-import { onLoad, onPullDownRefresh,  } from '@dcloudio/uni-app'
-import useDiary from '../../hooks/useDiary'
+import { onMounted } from 'vue'
+import { onLoad, onPullDownRefresh, onLaunch, onShow } from '@dcloudio/uni-app'
+import useDiary from '../../hooks/useDiary' 
+
 // const list = ref([])
 const { diaryList, getDiaryList } = useDiary()
 onLoad(() => {
@@ -35,6 +38,31 @@ onLoad(() => {
     }
   })
 })
+
+onShow(option => {
+  console.log(option)
+})
+
+onLaunch(options => {
+  uni.authorize({
+    scope: 'scope.userInfo',
+    success() {
+      // 用户同意了
+    },
+    fail() {
+      // 用户拒绝了
+      uni.showToast({ title: '请允许访问外部存储', icon: 'none' })
+    }
+  })
+  // 获取打开应用时的参数
+  const { path } = options
+  if (path) {
+    // 对接收到的文件路径进行处理
+    // this.handleFileOpen(path);
+    console.log('打开文件：：', path)
+    toDetail({ path })
+  }
+})
 onMounted(() => {
   // if (plus.os.name === 'Android') {
   //   const permission = ['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE'];
@@ -43,7 +71,7 @@ onMounted(() => {
   //       result &&
   //       result['android.permission.READ_EXTERNAL_STORAGE'] === 'granted' &&
   //       result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted'
-  //     ) { 
+  //     ) {
   //       console.log('权限已授予')
   //     } else {
   //       console.error('权限未授予')
@@ -61,6 +89,21 @@ onPullDownRefresh(() => {
   console.log('onPullDownRefresh')
 })
 
+const toDetail = item => {
+  uni.navigateTo({
+    url: '../detail/index',
+    success: function (res) {
+      // 通过eventChannel向被打开页面传送数据
+      res.eventChannel.emit('acceptDataFromList', { data: item })
+    },
+    fail: function (err) {
+      console.error('跳转失败:', err)
+    },
+    complete: function () {
+      console.log('跳转完成')
+    }
+  })
+}
 const toEdit = () => {
   uni.navigateTo({
     url: '../edit/index',

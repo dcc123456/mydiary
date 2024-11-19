@@ -21,6 +21,7 @@ const list = ref([])
 const props = defineProps({
   list: Array
 })
+const emit = defineEmits([ 'toDetail' ]);
 const { deleteDiary } = useDiary()
 watchEffect(() => {
   if (props.list) {
@@ -47,19 +48,20 @@ const deleteDiaryFun = (diaryItem: DiaryItem) => {
   })
 }
 const toDetail = item => {
-  uni.navigateTo({
-    url: '../detail/index',
-    success: function (res) {
-      // 通过eventChannel向被打开页面传送数据
-      res.eventChannel.emit('acceptDataFromList', { data: item })
-    },
-    fail: function (err) {
-      console.error('跳转失败:', err)
-    },
-    complete: function () {
-      console.log('跳转完成')
-    }
-  })
+  emit('toDetail',item)
+  // uni.navigateTo({
+  //   url: '../detail/index',
+  //   success: function (res) {
+  //     // 通过eventChannel向被打开页面传送数据
+  //     res.eventChannel.emit('acceptDataFromList', { data: item })
+  //   },
+  //   fail: function (err) {
+  //     console.error('跳转失败:', err)
+  //   },
+  //   complete: function () {
+  //     console.log('跳转完成')
+  //   }
+  // })
 }
 </script>
 

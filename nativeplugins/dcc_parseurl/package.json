@@ -1,0 +1,17 @@
+{
+	"name": "cotent://url解析",
+	"id": "dcc_parseurl",
+	"version": "1.0.0",
+	"description": "cotent url解析",
+	"_dp_type": "nativeplugin",
+	"_dp_nativeplugin": {
+		"android": {
+			"integrateType": "aar",
+			"plugins": [{
+				"type": "module",
+				"name": "dcc_parseurl",
+				"class": "com.dcc.dcc_parseurl.ParseModule"
+			}]
+		}
+	}
+}
